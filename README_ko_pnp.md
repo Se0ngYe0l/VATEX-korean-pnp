@@ -11,6 +11,16 @@ VATEX(WACV 2025 referring segmentation 모델)를 한국어 입력 전용으로 
 > 추론 시점에는 한국어 문장이 번역 없이 다국어 CLIP 텍스트 인코더에
 > 그대로 들어갑니다.
 
+## 다운로드
+
+- **체크포인트**: [huggingface.co/oSYPark/VATEX-korean-pnp](https://huggingface.co/oSYPark/VATEX-korean-pnp)
+  (`roborefit_finetune_ko/model_final.pth`, `roborefit_pnp_finetune_ko/model_final.pth`)
+- **OCID-Ref 한국어 번역 어노테이션**: [huggingface.co/datasets/oSYPark/ocidref-ko](https://huggingface.co/datasets/oSYPark/ocidref-ko)
+  (JSON만 제공 — 원본 이미지는 라이선스 문제로 재배포하지 않으니 공식 OCID
+  페이지에서 따로 받아야 함)
+- RoboRefit, RoboGround 데이터는 각 원 저작자의 공식 배포처를 이용하세요
+  (라이선스 문제로 이 레포/HF에서는 재배포하지 않습니다).
+
 ---
 
 ## 1. 환경
