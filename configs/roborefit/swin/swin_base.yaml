@@ -1,0 +1,28 @@
+_BASE_: ../BASE_VATEX.yaml
+MODEL:
+  # For fine-tuning from RefCOCO-pretrained VATEX instead of ImageNet-only init,
+  # swap this to the RefCOCO swin_base checkpoint from
+  # https://huggingface.co/itruonghai/VATEX and add MODEL.WEIGHTS override on
+  # the command line, e.g. MODEL.WEIGHTS results/swin_base/model_final.pth
+  WEIGHTS: "weights/swin_base_patch4_window12_384_22k.pkl"
+  BACKBONE:
+    NAME: "D2SwinTransformer"
+  SWIN:
+    EMBED_DIM: 128
+    DEPTHS: [2, 2, 18, 2]
+    NUM_HEADS: [4, 8, 16, 32]
+    WINDOW_SIZE: 12
+    APE: False
+    DROP_PATH_RATE: 0.3
+    PATCH_NORM: True
+    PRETRAIN_IMG_SIZE: 384
+    USE_CHECKPOINT: True
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+
+SOLVER:
+  IMS_PER_BATCH: 8
+  STEPS: (30000,)
+  MAX_ITER: 40000
+TEST:
+  EVAL_PERIOD: 2000

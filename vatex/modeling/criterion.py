@@ -212,7 +212,7 @@ class VideoSetCriterion(nn.Module):
     # Meaning Consistency Constraint 
     def loss_contrastive(self, outputs):
         sentence_feats = outputs["sentence_feats"]
-        if dist.get_world_size() > 1:
+        if is_dist_avail_and_initialized() and dist.get_world_size() > 1:
             sentence_feats = torch.cat(GatherLayer.apply(sentence_feats), dim=0)
         
         query = sentence_feats[0::3]

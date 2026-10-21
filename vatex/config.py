@@ -6,6 +6,14 @@ def add_vatex_config(cfg):
     """
     Add config for MASK_FORMER.
     """
+    # Multilingual (Korean) CLIP prior/text-tower support -- see
+    # vatex_model.py's `multilingual_clip` branch. Off by default so
+    # existing English configs/checkpoints are unaffected.
+    cfg.MODEL.MULTILINGUAL_CLIP = CN()
+    cfg.MODEL.MULTILINGUAL_CLIP.ENABLED = False
+    cfg.MODEL.MULTILINGUAL_CLIP.MODEL_NAME = "xlm-roberta-base-ViT-B-32"
+    cfg.MODEL.MULTILINGUAL_CLIP.PRETRAINED = "laion5b_s13b_b90k"
+
     # NOTE: configs from original maskformer
     # data config
     # select the dataset mapper
@@ -17,6 +25,9 @@ def add_vatex_config(cfg):
     cfg.INPUT.CROP.SINGLE_CATEGORY_MAX_AREA = 1.0
     # Pad image and segmentation GT in dataset mapper.
     cfg.INPUT.SIZE_DIVISIBILITY = -1
+    # Use the offline-translated `expressions_ko` field instead of
+    # `expressions` (English) when reading referring expressions.
+    cfg.INPUT.USE_KOREAN_EXPRESSIONS = False
 
     # solver config
     # weight decay on embedding

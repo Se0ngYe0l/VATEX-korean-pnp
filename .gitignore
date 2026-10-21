@@ -80,6 +80,13 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
+# Model checkpoints / pretrained weights / training outputs (too large for git)
+/results/
+/weights/
+*.pth
+*.pt
+*.ckpt
+
 # IPython
 profile_default/
 ipython_config.py

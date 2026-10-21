@@ -1,0 +1,31 @@
+_BASE_: swin_base.yaml
+MODEL:
+  MULTILINGUAL_CLIP:
+    ENABLED: True
+    MODEL_NAME: "xlm-roberta-base-ViT-B-32"
+    PRETRAINED: "laion5b_s13b_b90k"
+INPUT:
+  USE_KOREAN_EXPRESSIONS: True
+DATASETS:
+  TRAIN: ("roborefit_train_ko",)
+  TEST: ("roborefit_testA_ko",)
+# Warm-start from the English RoboRefit-finetuned checkpoint via
+# MODEL.WEIGHTS on the command line (e.g.
+# results/roborefit_finetune_fixed/model_final.pth) -- everything except
+# `resizer`/`clip_sim_resizer` (dimensions changed for the multilingual
+# CLIP tower) loads from it; those two layers are freshly initialized.
+# Expect fewer iterations to be needed than the original 40000 since the
+# backbone/decoder are already well-trained, just adapting to the new
+# text-conditioning pathway.
+SOLVER:
+  # VRAM was at 98.6% (24226/24576MB) at batch=4 -- far too tight, likely
+  # contributing to a machine crash/reboot. Halved to batch=2 for real
+  # headroom; Swin gradient checkpointing (below) trades compute for more
+  # memory on top of that.
+  IMS_PER_BATCH: 2
+  BASE_LR: 0.000025  # halved with batch size to keep the effective LR-per-sample the same
+  STEPS: (12000,)
+  MAX_ITER: 16000
+  CHECKPOINT_PERIOD: 500  # short period: machine has rebooted mid-run before, don't lose more than ~30min of progress
+TEST:
+  EVAL_PERIOD: 2000

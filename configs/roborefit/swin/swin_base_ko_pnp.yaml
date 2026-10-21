@@ -1,0 +1,17 @@
+_BASE_: swin_base_ko.yaml
+# Joint continued fine-tune on RoboRefit(pick-only) + RoboGround PnP
+# (pick_target/place_target, real dual-mask supervision) so the model
+# gains "where to place" grounding without forgetting RoboRefit.
+# Warm-start via MODEL.WEIGHTS on the command line, e.g.
+# results/roborefit_finetune_ko/model_final.pth
+DATASETS:
+  TRAIN: ("roborefit_train_ko", "roboground_pnp_train_ko")
+  TEST: ("roboground_pnp_test_ko",)
+SOLVER:
+  IMS_PER_BATCH: 2
+  BASE_LR: 0.000015
+  STEPS: (5000,)
+  MAX_ITER: 7000
+  CHECKPOINT_PERIOD: 500
+TEST:
+  EVAL_PERIOD: 1500

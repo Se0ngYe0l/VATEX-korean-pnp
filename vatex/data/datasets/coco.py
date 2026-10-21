@@ -70,7 +70,7 @@ Category ids in annotations are not in [1, #categories]! We'll apply a mapping f
 
     dataset_dicts = []
 
-    ann_keys = ["iscrowd", "bbox", "category_id", "expressions", "segmentation", "original_id"] + (extra_annotation_keys or [])
+    ann_keys = ["iscrowd", "bbox", "category_id", "expressions", "expressions_ko", "segmentation", "original_id"] + (extra_annotation_keys or [])
 
     total_expression = []
     for (img_dict, anno_dict_list) in imgs_anns:

@@ -129,6 +129,7 @@ class YTVISDatasetMapper:
         sampling_frame_range: int = 5,
         sampling_frame_shuffle: bool = False,
         num_classes: int = 40,
+        use_korean_expressions: bool = False,
     ):
         """
         NOTE: this interface is experimental.
@@ -147,6 +148,7 @@ class YTVISDatasetMapper:
         self.sampling_frame_range   = sampling_frame_range
         self.sampling_frame_shuffle = sampling_frame_shuffle
         self.num_classes            = num_classes
+        self.expr_key                = "expressions_ko" if use_korean_expressions else "expressions"
         # fmt: on
         mode = "training" if is_train else "inference"
         logger.info(f"[DatasetMapper] Augmentations used in {mode}: {augmentations}")
@@ -168,6 +170,7 @@ class YTVISDatasetMapper:
             "sampling_frame_range": sampling_frame_range,
             "sampling_frame_shuffle": sampling_frame_shuffle,
             "num_classes": cfg.MODEL.SEM_SEG_HEAD.NUM_CLASSES,
+            "use_korean_expressions": cfg.INPUT.USE_KOREAN_EXPRESSIONS,
         }
 
         return ret
@@ -208,7 +211,7 @@ class YTVISDatasetMapper:
             video_annos = [dataset_dict["annotations"]]
 
             expressions = dataset_dict["annotations"]
-            expression = expressions[anno_id]["expressions"][exp_id] 
+            expression = expressions[anno_id][self.expr_key][exp_id]
 
         
         _dataset_dict = {
@@ -243,7 +246,7 @@ class YTVISDatasetMapper:
 
         if self.is_train:     
             # Positive 
-            positive_exp = random.choice(expressions[anno_id]["expressions"])
+            positive_exp = random.choice(expressions[anno_id][self.expr_key])
             if positive_exp == expression:
                 positive_exp = positive_exp + '.'
             # Negative
@@ -252,7 +255,7 @@ class YTVISDatasetMapper:
                 negative_id = -1 
                 negative_exp = "None"
             else:
-                negative_exp = random.choice(expressions[negative_id]["expressions"])
+                negative_exp = random.choice(expressions[negative_id][self.expr_key])
             ids = { anno_id: 0,  negative_id: 1}
             _dataset_dict["positive_exp"] = positive_exp
             _dataset_dict["negative_exp"] = negative_exp

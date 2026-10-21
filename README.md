@@ -35,6 +35,12 @@ Vision-Aware Text Features in Referring Image Segmentation: From Object Understa
 
 ---
 
+> 🇰🇷 이 레포에는 한국어 입력 + 로봇 pick-and-place 이중 분할(VATEX 확장)
+> 작업이 추가되어 있습니다. 학습/인퍼런스 방법은
+> [README_ko_pnp.md](README_ko_pnp.md)를 참고하세요.
+
+---
+
 ## 🏆 State-of-the-Art Performance
 
 VATEX achieves state-of-the-art performance on multiple referring image segmentation benchmarks, demonstrating significant improvements over previous methods without requiring any external training data.
